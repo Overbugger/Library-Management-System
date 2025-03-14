@@ -1,0 +1,38 @@
+Added book: Game of Thrones
+Added book: Game of Thrones
+Added member: Okoro
+Added member: Okoro
+Added book: Harry Potter
+Added book: Harry Potter
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Borrowing failed: Book with ID d626f74d-e510-4b9c-85dc-396794987ffc not found.
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Borrowing failed: Book with ID d626f74d-e510-4b9c-85dc-396794987ffc not found.
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 1
+Member 1 borrowed book d626f74d-e510-4b9c-85dc-396794987ffc
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 1
+Member 1 borrowed book d626f74d-e510-4b9c-85dc-396794987ffc
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 1
+Member 1 borrowed book d626f74d-e510-4b9c-85dc-396794987ffc
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 1
+Member 1 borrowed book d626f74d-e510-4b9c-85dc-396794987ffc
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Borrowing failed: No available copies for book with ID d626f74d-e510-4b9c-85dc-396794987ffc
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 1
+Member 1 borrowed book d626f74d-e510-4b9c-85dc-396794987ffc
+Attempting to return book for borrowing record ID: 1
+Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully returned for record ID 1
+Returned book for record 1
+Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 1
+Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 1
+Member 1 borrowed book d626f74d-e510-4b9c-85dc-396794987ffc
+Attempting to return book for borrowing record ID: 2
+Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully returned for record ID 2
+Returned book for record 2
+3Copies of Things fall apart Added
+Added book: Things fall apart
