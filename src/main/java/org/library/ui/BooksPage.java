@@ -23,7 +23,7 @@ public class BooksPage extends BorderPane {
     private final LibraryService libraryService;
     private TableView<Book> tableView;
     private Pagination pagination;
-    private final int pageSize = 5;
+    private final int pageSize = 10;
 
     public BooksPage(LibraryService libraryService) {
         this.libraryService = libraryService;

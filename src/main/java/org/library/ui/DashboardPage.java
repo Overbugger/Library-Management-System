@@ -6,8 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import org.library.service.LibraryService;
 import org.library.model.BorrowingRecord;
-import org.library.model.Book;
-import org.library.model.Member;
 import java.util.List;
 
 public class DashboardPage extends BorderPane {
@@ -53,8 +51,8 @@ public class DashboardPage extends BorderPane {
 
         // Instruction Message
         Label instruction = new Label("Use the navigation panel on the left "
-                + "to manage books, members, transactions, and more. Explore the system to discover all available features.");
-        instruction.setStyle("-fx-font-size: 16px; -fx-alignment: center;");
+                + "to manage books, members, transactions, and more.");
+        instruction.setStyle("-fx-font-size: 16px; -fx-alignment: CENTER;");
         instruction.setWrapText(true);
         instruction.setPadding(new Insets(20, 0, 0, 0));
         instruction.setAlignment(Pos.CENTER);
