@@ -48,13 +48,6 @@
     -fx-pref-width: 200;
 }
 
-.profile-icon {
-    -fx-background-image: url("icons/profile.png");
-    -fx-background-size: cover;
-    -fx-min-width: 32px;
-    -fx-min-height: 32px;
-    -fx-cursor: hand;
-}
 
 /* Dashboard content area */
 .dashboard-content {

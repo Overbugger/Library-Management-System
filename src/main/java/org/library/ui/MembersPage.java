@@ -23,7 +23,7 @@ public class MembersPage extends BorderPane {
     private final LibraryService libraryService;
     private TableView<Member> tableView;
     private Pagination pagination;
-    private final int pageSize = 5;
+    private final int pageSize = 10;
 
     public MembersPage(LibraryService libraryService) {
         this.libraryService = libraryService;
@@ -48,6 +48,7 @@ public class MembersPage extends BorderPane {
         addMemberBtn.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");
         exportCSVBtn.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");
 
+        addMemberBtn.setOnAction(e -> showAddMemberModal());
         exportCSVBtn.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save CSV File");
