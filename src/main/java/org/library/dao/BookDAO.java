@@ -8,5 +8,10 @@ public interface BookDAO {
     void updateBook(Book book);
     void deleteBook(String bookId);
     List<Book> getAllBooks();
+
+//    Display Books with pagination
+    List<Book> displayBooks(int pageNum, int pageSize);
+
     Book getBookById(String bookId);
+
 }

@@ -31,7 +31,7 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter book title: ");
+                    System.out.print("\nEnter book title: ");
                     String title = scanner.nextLine();
                     System.out.print("Enter book author: ");
                     String author = scanner.nextLine();
@@ -47,17 +47,52 @@ public class Main {
                     book.setAvailableCopies(copies);
 
                     libraryService.addBook(book);
-                    System.out.println("Book added successfully.");
+                    System.out.println("\nBook added successfully.");
                     break;
                 case 2:
-                    List<Book> books = libraryService.getAllBooks();
-                    System.out.println("\nList of Books:");
-                    for (Book b : books) {
-                        System.out.println(b);
+                    int booksPageNum = 1;
+                    int booksPageSize = 5;
+
+                    while (true) {
+                        List<Book> books = libraryService.displayBooks(booksPageNum, booksPageSize);
+                        System.out.println("\nList of Books (Page " + booksPageNum + "):");
+                        System.out.println("---------------------------------------------");
+
+                        for (Book bk : books) {
+                            System.out.println("id: " + bk.getBookId());
+                            System.out.println("Title: " + bk.getTitle());
+                            System.out.println("Author: " + bk.getAuthor());
+                            System.out.println("Genre: " + bk.getGenre());
+                            System.out.println("Available Copy: " + bk.getAvailableCopies());
+                            System.out.println("---------------------------------------------");
+                        }
+
+                        // Check if this is the first page and/or last page
+                        boolean isFirstPage = (booksPageNum == 1);
+                        boolean isLastPage = (books.size() < booksPageSize);
+
+                        System.out.print("\nEnter 'n' for next page, 'p' for previous page, or any other key to exit: ");
+                        String option = scanner.nextLine();
+
+                        if (option.equalsIgnoreCase("n")) {
+                            if (isLastPage) {
+                                System.out.println("\nYou are at the last page. No more records available.");
+                            } else {
+                                booksPageNum++;
+                            }
+                        } else if (option.equalsIgnoreCase("p")) {
+                            if (!isFirstPage) {
+                                booksPageNum--;
+                            } else {
+                                System.out.println("\nYou are already at the first page.");
+                            }
+                        } else {
+                            break;
+                        }
                     }
                     break;
                 case 3:
-                    System.out.print("Enter member name: ");
+                    System.out.print("\nEnter member name: ");
                     String name = scanner.nextLine();
                     System.out.print("Enter member email: ");
                     String email = scanner.nextLine();
@@ -70,13 +105,47 @@ public class Main {
                     member.setPhone(phone);
 
                     libraryService.addMember(member);
-                    System.out.println("Member added successfully.");
+                    System.out.println("\nMember added successfully.");
                     break;
                 case 4:
-                    List<Member> members = libraryService.getAllMembers();
-                    System.out.println("\nList of Members:");
-                    for (Member m : members) {
-                        System.out.println(m);
+                    int membersPageNum = 1;
+                    int membersPageSize = 5;
+
+                    while (true) {
+                        List<Member> members = libraryService.displayMembers(membersPageNum, membersPageSize);
+                        System.out.println("\nList of Members (Page " + membersPageNum + "):");
+                        System.out.println("---------------------------------------------");
+
+                        for (Member mem : members) {
+                            System.out.println("id: " + mem.getMemberId());
+                            System.out.println("Name: " + mem.getName());
+                            System.out.println("Email: " + mem.getEmail());
+                            System.out.println("Phone: " + mem.getPhone());
+                            System.out.println("---------------------------------------------");
+                        }
+
+                        // Check if this is the first page and/or last page
+                        boolean isFirstPage = (membersPageNum == 1);
+                        boolean isLastPage = (members.size() < membersPageSize);
+
+                        System.out.print("\nEnter 'n' for next page, 'p' for previous page, or any other key to exit: ");
+                        String option = scanner.nextLine();
+
+                        if (option.equalsIgnoreCase("n")) {
+                            if (isLastPage) {
+                                System.out.println("\nYou are at the last page. No more records available.");
+                            } else {
+                                membersPageNum++;
+                            }
+                        } else if (option.equalsIgnoreCase("p")) {
+                            if (!isFirstPage) {
+                                membersPageNum--;
+                            } else {
+                                System.out.println("\nYou are already at the first page.");
+                            }
+                        } else {
+                            break;
+                        }
                     }
                     break;
                 case 5:
@@ -86,9 +155,9 @@ public class Main {
                     int memberId = Integer.parseInt(scanner.nextLine());
 
                     if (libraryService.borrowBook(bookId, memberId)) {
-                        System.out.println("Book borrowed successfully.");
+                        System.out.println("\nBook borrowed successfully.");
                     } else {
-                        System.out.println("Failed to borrow book.");
+                        System.out.println("\nFailed to borrow book.");
                     }
                     break;
                 case 6:
@@ -96,25 +165,25 @@ public class Main {
                     int recordId = Integer.parseInt(scanner.nextLine());
 
                     if (libraryService.returnBook(recordId)) {
-                        System.out.println("Book returned successfully.");
+                        System.out.println("\nBook returned successfully.");
                     } else {
-                        System.out.println("Failed to return book.");
+                        System.out.println("\nFailed to return book.");
                     }
                     break;
                 case 7:
                     CSVProvider.exportBooksToCSV(libraryService.getAllBooks(), "books.csv");
-                    System.out.println("Books exported to books.csv successfully.");
+                    System.out.println("\nBooks exported to books.csv successfully.");
                     break;
                 case 8:
                     CSVProvider.exportMembersToCSV(libraryService.getAllMembers(), "members.csv");
-                    System.out.println("Members exported to members.csv successfully.");
+                    System.out.println("\nMembers exported to members.csv successfully.");
                     break;
                 case 9:
                     exit = true;
-                    System.out.println("Exiting system.");
+                    System.out.println("\nExiting system...");
                     break;
                 default:
-                    System.out.println("Invalid choice. Try again.");
+                    System.out.println("\nInvalid choice. Try again.");
                     break;
             }
         }

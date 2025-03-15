@@ -16,9 +16,9 @@ import java.util.List;
 
 public class LibraryService {
 
-    private BookDAO bookDAO;
-    private MemberDAO memberDAO;
-    private BorrowingRecordDAO borrowingRecordDAO;
+    private final BookDAO bookDAO;
+    private final MemberDAO memberDAO;
+    private final BorrowingRecordDAO borrowingRecordDAO;
 
     public LibraryService() {
         // Instantiating DAO implementations
@@ -46,6 +46,11 @@ public class LibraryService {
 
     public List<Book> getAllBooks() {
         return bookDAO.getAllBooks();
+    }
+
+    public List<Book> displayBooks(int pageNum, int pageSize)
+    {
+        return bookDAO.displayBooks(pageNum, pageSize);
     }
 
     public Book getBookById(String bookId) {
@@ -76,6 +81,10 @@ public class LibraryService {
         return memberDAO.getAllMembers();
     }
 
+    public List<Member> displayMembers(int pageNum, int pageSize)
+    {
+        return memberDAO.displayMembers(pageNum, pageSize);
+    }
 
     // Borrowing Operations
 

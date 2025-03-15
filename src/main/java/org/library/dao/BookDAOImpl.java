@@ -85,6 +85,34 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
+    public List<Book> displayBooks(int pageNum, int pageSize) {
+        List<Book> books = new ArrayList<>();
+        int offset = (pageNum - 1) * pageSize;
+
+        String sql = "SELECT * FROM books ORDER BY title LIMIT ? OFFSET ?";
+        try (Connection connect = DbConnection.getConnection();
+             PreparedStatement statement = connect.prepareStatement(sql)){
+            statement.setInt(1, pageSize);
+            statement.setInt(2, offset);
+
+            try(ResultSet res = statement.executeQuery()){
+                while (res.next()) {
+                    Book book = new Book();
+                    book.setBookId(res.getString("book_id"));
+                    book.setTitle(res.getString("title"));
+                    book.setAuthor(res.getString("author"));
+                    book.setGenre(res.getString("genre"));
+                    book.setAvailableCopies(res.getInt("available_copies"));
+                    books.add(book);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+    @Override
     public Book getBookById(String bookId) {
         Book book = null;
 
@@ -109,4 +137,5 @@ public class BookDAOImpl implements BookDAO {
         }
         return book;
     }
+
 }

@@ -1,5 +1,6 @@
 package org.library.dao;
 
+import org.library.model.Book;
 import org.library.model.Member;
 import org.library.utils.DbConnection;
 
@@ -64,6 +65,33 @@ public class MemberDAOImpl implements MemberDAO {
                 member.setEmail(rs.getString("email"));
                 member.setPhone(rs.getString("phone"));
                 members.add(member);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return members;
+    }
+
+    @Override
+    public List<Member> displayMembers(int pageNum, int pageSize) {
+        List<Member> members = new ArrayList<>();
+        int offset = (pageNum - 1) * pageSize;
+
+        String sql = "SELECT * FROM members ORDER BY name LIMIT ? OFFSET ?";
+        try (Connection connect = DbConnection.getConnection();
+             PreparedStatement statement = connect.prepareStatement(sql)){
+            statement.setInt(1, pageSize);
+            statement.setInt(2, offset);
+
+            try(ResultSet res = statement.executeQuery()){
+                while (res.next()) {
+                    Member member = new Member();
+                    member.setMemberId(res.getInt("member_id"));
+                    member.setName(res.getString("name"));
+                    member.setEmail(res.getString("email"));
+                    member.setPhone(res.getString("phone"));
+                    members.add(member);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

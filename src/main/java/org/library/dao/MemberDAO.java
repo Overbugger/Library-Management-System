@@ -9,5 +9,9 @@ public interface MemberDAO {
     void updateMember(Member member);
     void deleteMember(int memberId);
     List<Member> getAllMembers();
+
+//    Display Members with pagination
+    List<Member> displayMembers(int pageNum, int pageSize);
+
     Member getMemberById(int memberId);
 }
