@@ -38,3 +38,10 @@ Returned book for record 2
 Added book: Things fall apart
 Sam Added
 Mike Added
+2 Copies of Purple Hibiscus Added
+Jon Snow Added
+Attempting to borrow book with ID: b7d168d9-53e0-4776-8fcc-f7b5c90492cc for member with ID: 1
+Book with ID b7d168d9-53e0-4776-8fcc-f7b5c90492cc successfully borrowed by member with ID 1
+Updated book: Purple Hibiscus (ID: 6fe5e3ea-e353-4e14-b7be-c919b715fdba)
+Attempting to borrow book with ID: 6fe5e3ea-e353-4e14-b7be-c919b715fdba for member with ID: 2
+Book with ID 6fe5e3ea-e353-4e14-b7be-c919b715fdba successfully borrowed by member with ID 2

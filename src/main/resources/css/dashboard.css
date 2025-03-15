@@ -1,0 +1,64 @@
+/* Root */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f5f7fa;
+}
+
+/* Sidebar styling */
+.sidebar {
+    -fx-background-color: #2e2e3e;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #3f3f5a;
+}
+
+.sidebar-button.active {
+    -fx-background-color: #50506f;
+    -fx-font-weight: bold;
+}
+
+/* Top bar styling */
+.top-bar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 10 20;
+    -fx-alignment: center-right;
+    -fx-spacing: 20;
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 0 0 1 0;
+}
+
+.top-bar-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2e2e3e;
+}
+
+.search-field {
+    -fx-pref-width: 200;
+}
+
+.profile-icon {
+    -fx-background-image: url("icons/profile.png");
+    -fx-background-size: cover;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-cursor: hand;
+}
+
+/* Dashboard content area */
+.dashboard-content {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-background-color: #f5f7fa;
+}
