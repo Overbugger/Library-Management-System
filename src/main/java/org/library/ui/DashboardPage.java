@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import org.library.model.Book;
 import org.library.service.LibraryService;
 import org.library.model.BorrowingRecord;
 import java.util.List;
@@ -18,7 +19,6 @@ public class DashboardPage extends BorderPane {
     }
 
     private void initializeUI() {
-        // Set overall padding for the dashboard
         setPadding(new Insets(30));
 
         // Top Header
@@ -33,7 +33,10 @@ public class DashboardPage extends BorderPane {
         cardsRow.setPadding(new Insets(20, 0, 20, 0));
 
         // Retrieve statistics from the service
-        int totalBooks = libraryService.getAllBooks().size();
+        int totalBooks = libraryService.getAllBooks()
+                .stream()
+                .mapToInt(Book::getAvailableCopies)
+                .sum();
         int totalMembers = libraryService.getAllMembers().size();
         List<BorrowingRecord> borrowingRecords = libraryService.getAllBorrowingRecords();
         int borrowedBooks = borrowingRecords.size();

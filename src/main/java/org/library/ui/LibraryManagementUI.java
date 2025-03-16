@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -16,9 +15,9 @@ public class LibraryManagementUI extends Application {
 
     private BorderPane root;
     private VBox sidebar;
-    private StackPane centerContent; // Center content area where pages are loaded
+    private StackPane centerContent;
     private ProgressIndicator loadingIndicator;
-    private final LibraryService libraryService = new LibraryService(); // Your service layer
+    private final LibraryService libraryService = new LibraryService();
 
     @Override
     public void start(Stage primaryStage) {
@@ -38,6 +37,7 @@ public class LibraryManagementUI extends Application {
         DashboardPage dashboardPage = new DashboardPage(libraryService);
         centerContent.getChildren().add(dashboardPage);
         loadingIndicator = new ProgressIndicator();
+        loadingIndicator.getStyleClass().add("my-progress-indicator");
         loadingIndicator.setVisible(false);
         centerContent.getChildren().add(loadingIndicator);
         StackPane.setAlignment(loadingIndicator, Pos.CENTER);
@@ -118,7 +118,6 @@ public class LibraryManagementUI extends Application {
     // Update the center content using a Region (like a DashboardPage, BooksPage, etc.)
     private void updateCenterContent(Region node) {
         Platform.runLater(() -> {
-            // Remove all children except the loading indicator
             centerContent.getChildren().removeIf(n -> !(n instanceof ProgressIndicator));
             centerContent.getChildren().add(0, node);
             hideLoadingIndicator();
@@ -147,7 +146,7 @@ public class LibraryManagementUI extends Application {
     private void simulateAction(Runnable action) {
         new Thread(() -> {
             try {
-                Thread.sleep(1000); // simulate delay
+                Thread.sleep(500);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
