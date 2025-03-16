@@ -13,6 +13,7 @@ import org.library.utils.LogManager;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LibraryService {
 
@@ -84,6 +85,18 @@ public class LibraryService {
     public List<Member> displayMembers(int pageNum, int pageSize)
     {
         return memberDAO.displayMembers(pageNum, pageSize);
+    }
+
+    public List<Book> searchBooks(String searchText) {
+        if (searchText == null || searchText.isEmpty()) {
+            return getAllBooks();
+        }
+        String lowerCaseSearch = searchText.toLowerCase();
+        return getAllBooks().stream()
+                .filter(b -> b.getTitle().toLowerCase().contains(lowerCaseSearch)
+                        || b.getAuthor().toLowerCase().contains(lowerCaseSearch)
+                        || b.getGenre().toLowerCase().contains(lowerCaseSearch))
+                .collect(Collectors.toList());
     }
 
     // Borrowing Operations

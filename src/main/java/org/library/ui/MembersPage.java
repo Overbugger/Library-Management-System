@@ -1,5 +1,6 @@
 package org.library.ui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -23,7 +24,7 @@ public class MembersPage extends BorderPane {
     private final LibraryService libraryService;
     private TableView<Member> tableView;
     private Pagination pagination;
-    private final int pageSize = 10;
+    private final int pageSize = 5;
 
     public MembersPage(LibraryService libraryService) {
         this.libraryService = libraryService;
@@ -33,7 +34,7 @@ public class MembersPage extends BorderPane {
     private void initializeUI() {
         setPadding(new Insets(30));
 
-        // HBox with "Members" title, "Add Member" and "Export CSV" buttons.
+        // Top bar with "Members" header and buttons.
         HBox topBar = new HBox(15);
         topBar.setAlignment(Pos.CENTER_RIGHT);
         topBar.setPadding(new Insets(10, 0, 20, 0));
@@ -44,11 +45,10 @@ public class MembersPage extends BorderPane {
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button addMemberBtn = new Button("Add Member");
-        Button exportCSVBtn = new Button("Export CSV");
         addMemberBtn.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");
-        exportCSVBtn.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");
-
         addMemberBtn.setOnAction(e -> showAddMemberModal());
+        Button exportCSVBtn = new Button("Export CSV");
+        exportCSVBtn.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");
         exportCSVBtn.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save CSV File");
@@ -62,25 +62,22 @@ public class MembersPage extends BorderPane {
             }
         });
 
-        topBar.getChildren().addAll(titleLabel, spacer, addMemberBtn, exportCSVBtn);
+        HBox rightPane = new HBox(10, addMemberBtn, exportCSVBtn);
+        rightPane.setAlignment(Pos.CENTER_RIGHT);
+        topBar.getChildren().addAll(titleLabel, spacer, rightPane);
         setTop(topBar);
 
-        // VBox with TableView and Pagination, aligned to top-left.
         VBox centerBox = new VBox(15);
         centerBox.setPadding(new Insets(20, 0, 0, 0));
         centerBox.setAlignment(Pos.TOP_LEFT);
-
         tableView = createTableView();
         pagination = new Pagination();
         pagination.setPageFactory(this::createPage);
-
         centerBox.getChildren().addAll(tableView, pagination);
         setCenter(centerBox);
 
         updateTableData(0);
     }
-
-    // Create the TableView for members
 
     private TableView<Member> createTableView() {
         TableView<Member> table = new TableView<>();
@@ -100,18 +97,18 @@ public class MembersPage extends BorderPane {
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         emailCol.setStyle("-fx-alignment: CENTER;");
 
-
         TableColumn<Member, String> phoneCol = new TableColumn<>("Phone");
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         phoneCol.setStyle("-fx-alignment: CENTER;");
 
-        // vertical "..." button that opens a menu with View, Update, Delete.
         TableColumn<Member, Void> actionCol = new TableColumn<>("Actions");
         actionCol.setStyle("-fx-alignment: CENTER;");
         actionCol.setCellFactory(col -> new TableCell<>() {
             private final MenuButton menuButton = new MenuButton("...");
 
             {
+                menuButton.getStyleClass().add("action-menu");
+
                 MenuItem viewItem = new MenuItem("View");
                 viewItem.setOnAction(e -> {
                     Member member = getTableView().getItems().get(getIndex());
@@ -128,7 +125,6 @@ public class MembersPage extends BorderPane {
                     showDeleteConfirmation(member);
                 });
                 menuButton.getItems().addAll(viewItem, updateItem, deleteItem);
-                menuButton.setStyle("-fx-font-size: 12px; -fx-padding: 5 10;");
             }
 
             @Override
@@ -142,7 +138,6 @@ public class MembersPage extends BorderPane {
         return table;
     }
 
-    // Called by the Pagination control to create a page
     private VBox createPage(int pageIndex) {
         updateTableData(pageIndex);
         return new VBox();
@@ -169,125 +164,253 @@ public class MembersPage extends BorderPane {
 
     private void showAddMemberModal() {
         Stage modal = createModalStage("Add Member");
-        VBox root = new VBox(15);
-        root.setPadding(new Insets(20));
+        modal.setResizable(false);
 
+        Label header = new Label("Add New Member");
+        header.getStyleClass().add("modal-form-title");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20));
+
+        Label nameLabel = new Label("Name:");
+        nameLabel.getStyleClass().add("modal-form-label");
         TextField nameField = new TextField();
-        nameField.setPromptText("Name");
+        nameField.setPromptText("Enter member name");
+        nameField.getStyleClass().add("modal-form-input-field");
+
+        Label emailLabel = new Label("Email:");
+        emailLabel.getStyleClass().add("modal-form-label");
         TextField emailField = new TextField();
-        emailField.setPromptText("Email");
+        emailField.setPromptText("Enter member email");
+        emailField.getStyleClass().add("modal-form-input-field");
+
+        Label phoneLabel = new Label("Phone:");
+        phoneLabel.getStyleClass().add("modal-form-label");
         TextField phoneField = new TextField();
-        phoneField.setPromptText("Phone");
+        phoneField.setPromptText("Enter member phone");
+        phoneField.getStyleClass().add("modal-form-input-field");
 
-        Button submitBtn = new Button("Add");
+        grid.add(nameLabel, 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(emailLabel, 0, 1);
+        grid.add(emailField, 1, 1);
+        grid.add(phoneLabel, 0, 2);
+        grid.add(phoneField, 1, 2);
+
+        Button submitBtn = new Button("Add Member");
         submitBtn.setStyle("-fx-font-size: 14px; -fx-padding: 8 16;");
+        HBox buttonBox = new HBox(submitBtn);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 10, 0));
+
+        VBox card = new VBox(20, header, grid, buttonBox);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(20));
+
+        ProgressIndicator modalIndicator = new ProgressIndicator();
+        modalIndicator.setVisible(false);
+        modalIndicator.getStyleClass().add("my-progress-indicator");
+
+        StackPane modalRoot = new StackPane(card, modalIndicator);
+        StackPane.setAlignment(modalIndicator, Pos.CENTER);
+
         submitBtn.setOnAction(e -> {
-            String name = nameField.getText();
-            String email = emailField.getText();
-            String phone = phoneField.getText();
+            networkOp(() -> {
+                String name = nameField.getText();
+                String email = emailField.getText();
+                String phone = phoneField.getText();
 
-            Member member = new Member();
-            member.setName(name);
-            member.setEmail(email);
-            member.setPhone(phone);
+                Member member = new Member();
+                member.setName(name);
+                member.setEmail(email);
+                member.setPhone(phone);
 
-            libraryService.addMember(member);
-            modal.close();
-            updateTableData(pagination.getCurrentPageIndex());
+                libraryService.addMember(member);
+                modal.close();
+                updateTableData(pagination.getCurrentPageIndex());
+            }, modalIndicator);
         });
 
-        root.getChildren().addAll(
-                new Label("Name:"), nameField,
-                new Label("Email:"), emailField,
-                new Label("Phone:"), phoneField,
-                submitBtn
-        );
-        Scene scene = new Scene(root, 320, 320);
+        Scene scene = new Scene(modalRoot, 400, 320);
+        scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
         modal.setScene(scene);
         modal.showAndWait();
     }
 
     private void showViewMemberModal(Member member) {
-        Stage modal = createDarkOverlayModal("View Member");
-        VBox root = new VBox(15);
-        root.setPadding(new Insets(20));
+        Stage modal = createModalStage("View Member");
+        modal.setResizable(false);
 
-        Label infoLabel = new Label("Member Details");
-        infoLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-        Label details = new Label(
-                "ID: " + member.getMemberId() + "\n" +
-                        "Name: " + member.getName() + "\n" +
-                        "Email: " + member.getEmail() + "\n" +
-                        "Phone: " + member.getPhone()
-        );
-        details.setStyle("-fx-font-size: 14px;");
+        Label header = new Label("Member Details");
+        header.getStyleClass().add("modal-form-title");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20));
+
+        Label idLabel = new Label("ID:");
+        idLabel.getStyleClass().add("modal-form-label");
+        Label idValue = new Label(String.valueOf(member.getMemberId()));
+
+        Label nameLabel = new Label("Name:");
+        nameLabel.getStyleClass().add("modal-form-label");
+        Label nameValue = new Label(member.getName());
+
+        Label emailLabel = new Label("Email:");
+        emailLabel.getStyleClass().add("modal-form-label");
+        Label emailValue = new Label(member.getEmail());
+
+        Label phoneLabel = new Label("Phone:");
+        phoneLabel.getStyleClass().add("modal-form-label");
+        Label phoneValue = new Label(member.getPhone());
+
+        grid.add(idLabel, 0, 0);
+        grid.add(idValue, 1, 0);
+        grid.add(nameLabel, 0, 1);
+        grid.add(nameValue, 1, 1);
+        grid.add(emailLabel, 0, 2);
+        grid.add(emailValue, 1, 2);
+        grid.add(phoneLabel, 0, 3);
+        grid.add(phoneValue, 1, 3);
 
         Button closeBtn = new Button("Close");
+        closeBtn.setStyle("-fx-font-size: 14px; -fx-padding: 8 16;");
         closeBtn.setOnAction(e -> modal.close());
+        HBox buttonBox = new HBox(closeBtn);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 20, 0));
 
-        root.getChildren().addAll(infoLabel, details, closeBtn);
-        Scene scene = new Scene(root, 350, 250);
+        VBox card = new VBox(20, header, grid, buttonBox);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(20));
+
+        StackPane modalRoot = new StackPane(card);
+        modalRoot.setPadding(new Insets(20));
+
+        Scene scene = new Scene(modalRoot, 400, 350);
+        scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
         modal.setScene(scene);
         modal.showAndWait();
     }
 
     private void showUpdateMemberModal(Member member) {
         Stage modal = createModalStage("Update Member");
-        VBox root = new VBox(15);
-        root.setPadding(new Insets(20));
+        modal.setResizable(false);
 
+        Label header = new Label("Update Member");
+        header.getStyleClass().add("modal-form-title");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20));
+
+        Label nameLabel = new Label("Name:");
+        nameLabel.getStyleClass().add("modal-form-label");
         TextField nameField = new TextField(member.getName());
+        nameField.getStyleClass().add("modal-form-input-field");
+
+        Label emailLabel = new Label("Email:");
+        emailLabel.getStyleClass().add("modal-form-label");
         TextField emailField = new TextField(member.getEmail());
+        emailField.getStyleClass().add("modal-form-input-field");
+
+        Label phoneLabel = new Label("Phone:");
+        phoneLabel.getStyleClass().add("modal-form-label");
         TextField phoneField = new TextField(member.getPhone());
+        phoneField.getStyleClass().add("modal-form-input-field");
+
+        grid.add(nameLabel, 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(emailLabel, 0, 1);
+        grid.add(emailField, 1, 1);
+        grid.add(phoneLabel, 0, 2);
+        grid.add(phoneField, 1, 2);
 
         Button updateBtn = new Button("Update");
-        updateBtn.setOnAction(e -> {
-            member.setName(nameField.getText());
-            member.setEmail(emailField.getText());
-            member.setPhone(phoneField.getText());
+        updateBtn.setStyle("-fx-font-size: 14px; -fx-padding: 8 16;");
+        HBox buttonBox = new HBox(updateBtn);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 10, 0));
 
-            libraryService.updateMember(member);
-            modal.close();
-            updateTableData(pagination.getCurrentPageIndex());
+        VBox card = new VBox(20, header, grid, buttonBox);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(20));
+
+        ProgressIndicator modalIndicator = new ProgressIndicator();
+        modalIndicator.setVisible(false);
+        modalIndicator.getStyleClass().add("my-progress-indicator");
+
+        StackPane modalRoot = new StackPane(card, modalIndicator);
+        StackPane.setAlignment(modalIndicator, Pos.CENTER);
+
+        updateBtn.setOnAction(e -> {
+            networkOp(() -> {
+                member.setName(nameField.getText());
+                member.setEmail(emailField.getText());
+                member.setPhone(phoneField.getText());
+
+                libraryService.updateMember(member);
+                modal.close();
+                updateTableData(pagination.getCurrentPageIndex());
+            }, modalIndicator);
         });
 
-        root.getChildren().addAll(
-                new Label("Name:"), nameField,
-                new Label("Email:"), emailField,
-                new Label("Phone:"), phoneField,
-                updateBtn
-        );
-        Scene scene = new Scene(root, 320, 320);
+        Scene scene = new Scene(modalRoot, 400, 350);
+        scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
         modal.setScene(scene);
         modal.showAndWait();
     }
 
     private void showDeleteConfirmation(Member member) {
-        Stage modal = createDarkOverlayModal("Delete Member");
-        VBox root = new VBox(15);
-        root.setPadding(new Insets(20));
+        Stage modal = createModalStage("Delete Member");
+        modal.setResizable(false);
+
+        Label header = new Label("Delete Member");
+        header.getStyleClass().add("modal-form-title");
 
         Label confirmLabel = new Label("Are you sure you want to delete:\n" + member.getName() + "?");
+        confirmLabel.getStyleClass().add("modal-form-label");
+
         Button deleteBtn = new Button("Delete");
+        deleteBtn.getStyleClass().add("modal-warning");
         Button cancelBtn = new Button("Cancel");
+        cancelBtn.setStyle("-fx-font-size: 14px; -fx-padding: 8 16;");
+
+        HBox buttonBox = new HBox(10, deleteBtn, cancelBtn);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
+
+        VBox card = new VBox(20, header, confirmLabel, buttonBox);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(20));
+
+        ProgressIndicator modalIndicator = new ProgressIndicator();
+        modalIndicator.setVisible(false);
+        modalIndicator.getStyleClass().add("my-progress-indicator");
+
+        StackPane modalRoot = new StackPane(card, modalIndicator);
+        modalRoot.setPadding(new Insets(20));
 
         deleteBtn.setOnAction(e -> {
-            libraryService.deleteMember(member.getMemberId());
-            modal.close();
-            updateTableData(pagination.getCurrentPageIndex());
+            networkOp(() -> {
+                libraryService.deleteMember(member.getMemberId());
+                modal.close();
+                updateTableData(pagination.getCurrentPageIndex());
+            }, modalIndicator);
         });
         cancelBtn.setOnAction(e -> modal.close());
 
-        HBox btnBox = new HBox(10, deleteBtn, cancelBtn);
-        btnBox.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(confirmLabel, btnBox);
-        Scene scene = new Scene(root, 320, 180);
+        Scene scene = new Scene(modalRoot, 400, 200);
+        scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
         modal.setScene(scene);
         modal.showAndWait();
     }
 
-    // Utility methods for modals and alerts
-
+    // Utility Methods for modals and alerts
     private Stage createModalStage(String title) {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -295,18 +418,27 @@ public class MembersPage extends BorderPane {
         return stage;
     }
 
-    private Stage createDarkOverlayModal(String title) {
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle(title);
-        // For a more realistic dark overlay effect, you might apply additional CSS.
-        return stage;
-    }
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.showAndWait();
+    }
+
+    // A network operation helper that shows a local loading indicator during execution.
+    private void networkOp(Runnable action, ProgressIndicator indicator) {
+        Platform.runLater(() -> indicator.setVisible(true));
+        new Thread(() -> {
+            try {
+                Thread.sleep(500); // simulate delay
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            Platform.runLater(() -> {
+                action.run();
+                indicator.setVisible(false);
+            });
+        }).start();
     }
 }

@@ -55,3 +55,46 @@
     -fx-spacing: 20;
     -fx-background-color: #f5f7fa;
 }
+
+.action-menu {
+    -fx-font-size: 12px;
+    -fx-padding: 5 10;
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-pref-width: 50px;
+}
+
+.action-menu:hover {
+    -fx-background-color: #3f3f5a;
+}
+
+.modal-form-title {
+-fx-font-size: 20px;
+-fx-font-weight: bold;
+-fx-text-fill: #333}
+
+.modal-form-label {
+-fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.modal-form-input-field {
+-fx-pref-width: 200px;
+ -fx-height: 25px;
+}
+
+.modal-warning {
+-fx-font-size: 14px;
+-fx-padding: 8 16;
+-fx-background-color: #d9534f;
+-fx-text-fill: white;
+}
+
+.my-progress-indicator {
+    -fx-progress-color: #2e2e3e;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+}
