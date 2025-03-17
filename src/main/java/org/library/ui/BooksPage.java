@@ -20,6 +20,8 @@ import org.library.utils.CSVProvider;
 import java.io.File;
 import java.util.List;
 
+import static org.library.utils.UI.*;
+
 public class BooksPage extends BorderPane {
 
     private final LibraryService libraryService;
@@ -85,7 +87,7 @@ public class BooksPage extends BorderPane {
 
         searchButton.setOnAction(e -> {
             String searchText = searchField.getText().trim();
-            simulateAction(() -> {
+            networkOp(() -> {
                 List<Book> results = libraryService.searchBooks(searchText);
                 Platform.runLater(() -> {
                     if (results.isEmpty()) {
@@ -97,7 +99,7 @@ public class BooksPage extends BorderPane {
                         updateTableData(0);
                     }
                 });
-            });
+            }, loadingIndicator);
         });
 
         Button addBookBtn = new Button("Add Book");
@@ -289,8 +291,6 @@ public class BooksPage extends BorderPane {
 
         ProgressIndicator modalIndicator = new ProgressIndicator();
         modalIndicator.setVisible(false);
-        modalIndicator.getStyleClass().add("my-progress-indicator");
-
 
         StackPane modalRoot = new StackPane(modalContent, modalIndicator);
         StackPane.setAlignment(modalIndicator, Pos.CENTER);
@@ -439,7 +439,6 @@ public class BooksPage extends BorderPane {
 
         ProgressIndicator modalIndicator = new ProgressIndicator();
         modalIndicator.setVisible(false);
-        modalIndicator.getStyleClass().add("my-progress-indicator");
 
         StackPane modalRoot = new StackPane(card, modalIndicator);
         StackPane.setAlignment(modalIndicator, Pos.CENTER);
@@ -556,7 +555,6 @@ public class BooksPage extends BorderPane {
 
         ProgressIndicator modalIndicator = new ProgressIndicator();
         modalIndicator.setVisible(false);
-        modalIndicator.getStyleClass().add("my-progress-indicator");
 
         StackPane modalRoot = new StackPane(card, modalIndicator);
         modalRoot.setPadding(new Insets(20));
@@ -577,55 +575,4 @@ public class BooksPage extends BorderPane {
     }
 
 
-    // Utility Methods
-
-    // A network operation helper that shows a local loading indicator during execution.
-    private void networkOp(Runnable action, ProgressIndicator indicator) {
-        Platform.runLater(() -> indicator.setVisible(true));
-        new Thread(() -> {
-            try {
-                Thread.sleep(500); // simulate delay
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                action.run();
-                indicator.setVisible(false);
-            });
-        }).start();
-    }
-
-    // simulate a delay (for global operations) with loading indicator.
-    private void simulateAction(Runnable action) {
-        Platform.runLater(() -> loadingIndicator.setVisible(true));
-        new Thread(() -> {
-            try {
-                Thread.sleep(500); // simulate delay
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                action.run();
-                loadingIndicator.setVisible(false);
-            });
-        }).start();
-    }
-
-
-    // Utility method for creating modals.
-    private Stage createModalStage(String title) {
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle(title);
-        return stage;
-    }
-
-
-    // Utility method for showing alerts.
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.showAndWait();
-    }
 }
