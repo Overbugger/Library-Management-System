@@ -19,6 +19,8 @@ import org.library.utils.DateUtil;
 import java.sql.Date;
 import java.util.List;
 
+import static org.library.utils.UI.*;
+
 public class BorrowReturnPage extends BorderPane {
 
     private final LibraryService libraryService;
@@ -310,36 +312,5 @@ public class BorrowReturnPage extends BorderPane {
         scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
         modal.setScene(scene);
         modal.showAndWait();
-    }
-
-    // Utility Methods
-    private Stage createModalStage(String title) {
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle(title);
-        return stage;
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.showAndWait();
-    }
-
-    private void networkOp(Runnable action, ProgressIndicator indicator) {
-        indicator.getStyleClass().add("my-progress-indicator");
-        Platform.runLater(() -> indicator.setVisible(true));
-        new Thread(() -> {
-            try {
-                Thread.sleep(500); // simulate delay
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                action.run();
-                indicator.setVisible(false);
-            });
-        }).start();
     }
 }

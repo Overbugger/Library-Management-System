@@ -1,6 +1,5 @@
 package org.library.ui;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.library.model.Member;
 import org.library.service.LibraryService;
@@ -18,6 +16,8 @@ import org.library.utils.CSVProvider;
 
 import java.io.File;
 import java.util.List;
+
+import static org.library.utils.UI.*;
 
 public class MembersPage extends BorderPane {
 
@@ -211,7 +211,6 @@ public class MembersPage extends BorderPane {
 
         ProgressIndicator modalIndicator = new ProgressIndicator();
         modalIndicator.setVisible(false);
-        modalIndicator.getStyleClass().add("my-progress-indicator");
 
         StackPane modalRoot = new StackPane(card, modalIndicator);
         StackPane.setAlignment(modalIndicator, Pos.CENTER);
@@ -342,7 +341,6 @@ public class MembersPage extends BorderPane {
 
         ProgressIndicator modalIndicator = new ProgressIndicator();
         modalIndicator.setVisible(false);
-        modalIndicator.getStyleClass().add("my-progress-indicator");
 
         StackPane modalRoot = new StackPane(card, modalIndicator);
         StackPane.setAlignment(modalIndicator, Pos.CENTER);
@@ -390,7 +388,6 @@ public class MembersPage extends BorderPane {
 
         ProgressIndicator modalIndicator = new ProgressIndicator();
         modalIndicator.setVisible(false);
-        modalIndicator.getStyleClass().add("my-progress-indicator");
 
         StackPane modalRoot = new StackPane(card, modalIndicator);
         modalRoot.setPadding(new Insets(20));
@@ -408,37 +405,5 @@ public class MembersPage extends BorderPane {
         scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
         modal.setScene(scene);
         modal.showAndWait();
-    }
-
-    // Utility Methods for modals and alerts
-    private Stage createModalStage(String title) {
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle(title);
-        return stage;
-    }
-
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.showAndWait();
-    }
-
-    // A network operation helper that shows a local loading indicator during execution.
-    private void networkOp(Runnable action, ProgressIndicator indicator) {
-        Platform.runLater(() -> indicator.setVisible(true));
-        new Thread(() -> {
-            try {
-                Thread.sleep(500); // simulate delay
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                action.run();
-                indicator.setVisible(false);
-            });
-        }).start();
     }
 }

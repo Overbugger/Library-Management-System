@@ -1,43 +1,4 @@
-1 Copies of Jabs Added
-1 Copies of Jabs Added
-2 Copies of sdsf Added
-1 Copies of dfdgdgdsafsasf Added
-8 Copies of bgkjk Added
-6 Copies of khgh Added
-Deleted book with ID: 9be19871-1997-4250-880a-86616e78a84c
-Deleted book with ID: cbc5bfca-88f6-467d-870b-dbee27c24343
-11 Copies of rytery Added
-Deleted book with ID: c740f97d-153d-4a80-9291-2d7e421b0687
-Deleted book with ID: 97c35edc-fc86-4467-82a5-2e1945b222b7
-Deleted book with ID: f80f27df-900f-42e6-a83f-83e9c487b6c0
-Deleted book with ID: ddf866a4-2e13-4516-b7f2-dc47254f3364
-1 Copies of Jabs Added
-Deleted book with ID: a9536082-675a-4f60-aad7-1c7b11f12018
-1 Copies of Jabs Added
-Deleted book with ID: 0eb4251e-11a1-439d-90b3-38865c8bbdde
-2 Copies of Jabs Added
-Deleted book with ID: b3113d71-dd95-4c32-8167-699d010b808b
-Updated book: Jabs (ID: 1f91dbca-c9cf-4bcd-92f7-1cc6785946e6)
-Deleted book with ID: 1f91dbca-c9cf-4bcd-92f7-1cc6785946e6
-1 Copies of hsdfsf Added
-Deleted book with ID: 4903699f-4902-4920-be6b-00cc7176c984
-John Added
-Updated member: John Doe (ID: 5)
-Deleted member with ID: 5
-Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 2
-Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 2
-Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 2
-Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 2
-Attempting to return book for borrowing record ID: 3
-Book with ID b7d168d9-53e0-4776-8fcc-f7b5c90492cc successfully returned for record ID 3
-Attempting to return book for borrowing record ID: 4
-Book with ID 6fe5e3ea-e353-4e14-b7be-c919b715fdba successfully returned for record ID 4
-Attempting to return book for borrowing record ID: 5
-Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully returned for record ID 5
-Attempting to return book for borrowing record ID: 4
-Return failed: Book for record ID 4 has already been returned.
-Attempting to return book for borrowing record ID: 6
-Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully returned for record ID 6
-Updated book: Game of Thrones (ID: d626f74d-e510-4b9c-85dc-396794987ffc)
-Attempting to borrow book with ID: d626f74d-e510-4b9c-85dc-396794987ffc for member with ID: 3
-Book with ID d626f74d-e510-4b9c-85dc-396794987ffc successfully borrowed by member with ID 3
+3 Copies of Things dey sup Added
+1 Copies of fasfssfsa Added
+Deleted book with ID: c075bb24-bd60-4273-ac7a-64ecf8dedb06
+Deleted book with ID: 85c99b18-add5-4398-8bab-e4dc88c663b0

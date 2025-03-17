@@ -10,6 +10,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.library.service.LibraryService;
+import static org.library.utils.UI.networkOp;
 
 public class LibraryManagementUI extends Application {
 
@@ -37,7 +38,6 @@ public class LibraryManagementUI extends Application {
         DashboardPage dashboardPage = new DashboardPage(libraryService);
         centerContent.getChildren().add(dashboardPage);
         loadingIndicator = new ProgressIndicator();
-        loadingIndicator.getStyleClass().add("my-progress-indicator");
         loadingIndicator.setVisible(false);
         centerContent.getChildren().add(loadingIndicator);
         StackPane.setAlignment(loadingIndicator, Pos.CENTER);
@@ -71,35 +71,31 @@ public class LibraryManagementUI extends Application {
         // Sidebar actions with active style and loading indicator
         btnDashboard.setOnAction(e -> {
             setActiveSidebarButton(btnDashboard);
-            showLoadingIndicator();
-            simulateAction(() -> {
+           networkOp(() -> {
                 DashboardPage dashboardPage = new DashboardPage(libraryService);
                 updateCenterContent(dashboardPage);
-            });
+            }, loadingIndicator);
         });
         btnBooks.setOnAction(e -> {
             setActiveSidebarButton(btnBooks);
-            showLoadingIndicator();
-            simulateAction(() -> {
+            networkOp(() -> {
                 BooksPage booksPage = new BooksPage(libraryService);
                 updateCenterContent(booksPage);
-            });
+            }, loadingIndicator);
         });
         btnMembers.setOnAction(e -> {
             setActiveSidebarButton(btnMembers);
-            showLoadingIndicator();
-            simulateAction(() -> {
+            networkOp(() -> {
                 MembersPage membersPage = new MembersPage(libraryService);
                 updateCenterContent(membersPage);
-            });
+            }, loadingIndicator);
         });
         btnBorrowReturn.setOnAction(e -> {
             setActiveSidebarButton(btnBorrowReturn);
-            showLoadingIndicator();
-            simulateAction(() -> {
+            networkOp(() -> {
                 BorrowReturnPage borrowReturnPage = new BorrowReturnPage(libraryService);
                 updateCenterContent(borrowReturnPage);
-            });
+            }, loadingIndicator);
         });
         btnExit.setOnAction(e -> Platform.exit());
 
@@ -120,7 +116,6 @@ public class LibraryManagementUI extends Application {
         Platform.runLater(() -> {
             centerContent.getChildren().removeIf(n -> !(n instanceof ProgressIndicator));
             centerContent.getChildren().add(0, node);
-            hideLoadingIndicator();
         });
     }
 
@@ -132,26 +127,6 @@ public class LibraryManagementUI extends Application {
             }
         }
         activeButton.getStyleClass().add("active");
-    }
-
-    // Show and hide the loading indicator
-    private void showLoadingIndicator() {
-        Platform.runLater(() -> loadingIndicator.setVisible(true));
-    }
-    private void hideLoadingIndicator() {
-        Platform.runLater(() -> loadingIndicator.setVisible(false));
-    }
-
-    // Simulate a delay (e.g., for network calls) then execute the action
-    private void simulateAction(Runnable action) {
-        new Thread(() -> {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            action.run();
-        }).start();
     }
 
     public static void main(String[] args) {
